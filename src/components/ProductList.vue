@@ -1,19 +1,33 @@
-<template> 
-  <div>
+<template>
+  <div class="main">
+    <div class="cart">
+      <router-link to="/shopping-cart">
+        <span class="total-quantity"> </span>
+        <span class="material-icons">shopping_cart</span>
+      </router-link>
+    </div>
     <h1>Product List</h1>
-    <img v-if="loading" src="https://i.imgur.com/JfPpwOA.gif">
-    <ul v-else>
-      <li v-for="product in products" :key="product.id">
-        <img :src="product.image">
-        <p>{{product.title}} - {{product.price}} currency | {{product.inventory}}</p>
-        <button @click="addProductToCart(product)">Add To Cart</button>
-      </li>
-    </ul>
+    <div class="products">
+      <img v-if="loading" src="https://i.imgur.com/JfPpwOA.gif">
+      <ul v-else>
+        <li v-for="product in products" :key="product.id">
+          <img :src="product.image">
+          <p>{{product.title}} - {{product.price}} $ </p> <a>Stock({{product.inventory}})</a>
+          <button :disabled="!productIsInStock(product)"
+                  @click="addProductToCart(product)"
+                  class="material-icons"
+          > add_shopping_cart
+          </button>
+          <router-link to="/product-detail">Details</router-link>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
-//import shop from "@/api/shop.js"
+import {mapState, mapGetters, mapActions} from "vuex"
+
   export  default {
 
     data() {
@@ -23,20 +37,25 @@
     },
 
     computed: {
-      products() {
-        return this.$store.getters.availableProducts
-      }
+        ...mapState({
+      products: state => state.products.items
+      }),
+
+      ...mapGetters("products", {
+        productIsInStock: "productIsInStock"
+      })
     },
 
     methods: {
-      addProductToCart(product) {
-        this.$store.dispatch("addProductToCart", product)
-      }
+      ...mapActions({
+        fetchProducts: "products/fetchProducts",
+        addProductToCart: "cart/addProductToCart"
+      }),
     },
 
     created() {
       this.loading = true
-      this.$store.dispatch("fetchProducts")
+      this.fetchProducts()
           .then(() => this.loading = false)
     },
 
@@ -52,16 +71,15 @@ ul{
 }
 
 li{
-  max-height: 140px;
-  max-width: 120px;
-  min-height: 140px;
-  min-width: 120px;
-  border: 1px solid gray;
+  height: 180px;
+  width: 130px;
+  border: 1px solid silver;
   border-radius: 5px;
+  box-shadow: 1px 1px 3px 1px silver;
   float: left;
   padding: 2%;
-  margin-left: 2%;
-  margin-right: 2%;
+  margin-left: 1%;
+  margin-right: 1%;
   margin-top: 2%;
   margin-bottom: 2%;
 }
@@ -75,12 +93,38 @@ img{
 
 button{
   float: right ;
-  padding: 1%;
-  margin-top: 2%;
-  margin-bottom: 2%;
+  padding: 2%;
+  margin-bottom: 5%;
+  background-color: cornflowerblue;
+  border: cornflowerblue;
+  border-radius: 6px;
 }
 
 p{
   font-weight: bold;
+}
+
+a{
+  font-style: italic;
+  float: left;
+}
+
+span{
+  font-size: 260%;
+  text-decoration: none;
+  color: cornflowerblue;
+}
+
+.total-quantity{
+  font-size: medium;
+}
+
+.products{
+  float: center;
+}
+
+.cart{
+  float: right;
+  padding: 2%;
 }
 </style>

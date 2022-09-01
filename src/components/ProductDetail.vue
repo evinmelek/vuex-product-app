@@ -1,25 +1,18 @@
 <template>
+  <h1>Product Details</h1>
   <div class="main">
-    <h1>Product Details</h1>
-    <div class="products">
+    <div class="products" v-for="product in products" :key="product.id">
       <img v-if="loading" src="https://i.imgur.com/JfPpwOA.gif">
-      <ul v-else>
-        <li v-for="product in products" :key="product.id">
-          <img :src="product.image">
-          <p>{{product.title}} - {{product.price}} $ </p> <a>Stock({{product.inventory}})</a>
-          <button :disabled="!productIsInStock(product)"
-                  @click="addProductToCart(product)"
-                  class="material-icons"
-          > add_shopping_cart
-          </button>
-        </li>
-      </ul>
+      <img :src="product.image">
+      <a>{{product.title}} - {{product.price}} $ </a>
+      <p>{{product.detail}}</p>
     </div>
   </div>
 </template>
 
+
 <script>
-import {mapState, mapGetters, mapActions} from "vuex"
+import {mapState,  mapActions} from "vuex"
 
 export  default {
 
@@ -33,10 +26,6 @@ export  default {
     ...mapState({
       products: state => state.products.items
     }),
-
-    ...mapGetters("products", {
-      productIsInStock: "productIsInStock"
-    })
   },
 
   methods: {
@@ -56,67 +45,43 @@ export  default {
 
 </script>
 
+
 <style scoped>
-
-ul{
-  list-style-type: none;
-  align: center;
-}
-
-li{
-  height: 180px;
-  width: 130px;
-  border: 1px solid silver;
-  border-radius: 5px;
-  box-shadow: 1px 1px 3px 1px silver;
+ img{
   float: left;
-  padding: 2%;
-  margin-left: 1%;
-  margin-right: 1%;
-  margin-top: 2%;
-  margin-bottom: 2%;
-}
-
-img{
-  float: top;
-  height: 60px;
-  width: 60px;
+  height: 160px;
+  width: auto;
   align: center;
-}
-
-button{
-  float: right ;
-  padding: 2%;
-  margin-bottom: 5%;
-  background-color: cornflowerblue;
-  border: cornflowerblue;
-  border-radius: 6px;
-}
-
-p{
-  font-weight: bold;
+   padding: 5%;
 }
 
 a{
-  font-style: italic;
+  font-weight: bold;
   float: left;
+}
+
+p{
+  float: left;
+  border: 1px solid cornflowerblue;
+  padding: 2%;
+  min-height: 150px;
+  width: 90%;
 }
 
 span{
   font-size: 260%;
-  text-decoration: none;
   color: cornflowerblue;
 }
 
-.total-quantity{
-  font-size: medium;
-}
-
 .products{
-  float: right;
+  width: 60%;
+  height: auto;
+  padding: 5%;
 }
 
-.cart{
-  float: right;
+.main{
+  padding: 1%;
+  float: center;
+  width: 100%;
 }
 </style>
