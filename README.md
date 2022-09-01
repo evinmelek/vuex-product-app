@@ -1,4 +1,4 @@
-# vuex-cinema-ticket-app
+# vuex-product-app
 
 ## Project setup
 ```
