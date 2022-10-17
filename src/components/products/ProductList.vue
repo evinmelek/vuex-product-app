@@ -18,7 +18,10 @@
                   class="material-icons"
           > add_shopping_cart
           </button>
-          <router-link to="/product-detail">Details</router-link>
+          <router-link
+              :to="{name: 'product-detail' }"
+          >Details
+          </router-link>
         </li>
       </ul>
     </div>
@@ -49,7 +52,7 @@ import {mapState, mapGetters, mapActions} from "vuex"
     methods: {
       ...mapActions({
         fetchProducts: "products/fetchProducts",
-        addProductToCart: "cart/addProductToCart"
+        addProductToCart: "cart/addProductToCart",
       }),
     },
 

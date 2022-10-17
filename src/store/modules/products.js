@@ -1,4 +1,4 @@
-import shop from "@/api/shop";
+import axios from "@/api/axios/index";
 
 export  default {
     namespaced: true,
@@ -33,15 +33,14 @@ export  default {
     },
 
     actions: {
-        fetchProducts({commit}) {
-            return new Promise((resolve, reject ) => {
-
-                shop.getProducts(products => {
-                    commit("setProducts", products )
-                    resolve()
-                    reject()
-                })
-            })
+        async fetchProducts({commit}) {
+            try {
+                const data = await axios.get("http://localhost:3000/products" )
+                commit("setProducts", data.data)
+            }
+            catch (error) {
+                console.error(error)
+            }
         },
     }
 }

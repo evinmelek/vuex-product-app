@@ -4,7 +4,8 @@ export  default {
     namespaced: true,
     state: {
         items: [],
-        checkoutStatus: null
+        checkoutStatus: null,
+        removedItemStatus: null
     },
 
     getters: {
@@ -40,8 +41,8 @@ export  default {
             cartItem.quantity--
         },
 
-        removeProductFromCart(state, productId) {
-            state.items = state.items.filter(product => product.id !== productId)
+        removeProductFromCart(state, status) {
+            state.removedItemStatus = status
         },
 
         setCheckoutStatus(state, status) {
@@ -70,35 +71,20 @@ export  default {
         },
 
         increaseFromCart({state, commit}, product) {
-                const cartItem = state.items.find(item => item.id === product.id)
-            if(cartItem > 0 ){
+            const cartItem = state.items.find(item => item.id === product.id)
                 commit("incrementItemQuantity", cartItem)
+        },
+
+        decreaseFromCart({state, commit}, product) {
+            const cartItem = state.items.find(item => item.id === product.id)
+            if(cartItem > 0 ){
+                commit("decrementItemQuantity", cartItem)
             }
         },
 
-        decreaseFromCart({state, commit, rootGetters}, product) {
-            if(rootGetters["products/productIsInStock"](product)) {
-                const cartItem = state.items.find(item => item.id === product.id)
-                if(!cartItem) {
-                    commit("pushProductToCart", product.id)
-                } else {
-                    commit("decrementItemQuantity", cartItem)
-                }
-                commit("products/decrementProductInventory", product, {root: true})
-            } else {
-                alert("Product out of stock!")
-            }
-        },
-
-        removeFromCart({state, commit}) {
-            shop.delete(
-                state.items,
-                () => {
+        removeFromCart({commit}) {
                     commit("removeProductFromCart")
-                },
-            )
         },
-
         checkout({state, commit}) {
             shop.buyProducts(
                 state.items,

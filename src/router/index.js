@@ -6,19 +6,19 @@ const router = createRouter({
         {
             path: "/",
             name: "product-list",
-            component: () => import("../components/ProductList")
+            component: () => import("../components/products/ProductList")
         },
 
         {
             path: "/shopping-cart",
             name: "shopping-cart",
-            component: () => import("../components/ShoppingCart")
+            component: () => import("../components/cart/ShoppingCart")
         },
 
         {
             path: "/product-detail",
             name: "product-detail",
-            component: () => import("../components/ProductDetail")
+            component: () => import("../components/detail/ProductDetail")
         }
     ]
 })

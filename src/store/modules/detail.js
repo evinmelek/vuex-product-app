@@ -1,4 +1,4 @@
-
+import axios from "axios";
 export  default {
     namespaced: true,
     state: {
@@ -26,10 +26,10 @@ export  default {
     },
 
     actions: {
-
-        getProductDetails(context, products) {
-            let product = context.getters.productDetails(products.id);
-            context.commit('setProductDetails',product)
+        async getProductDetails(id) {
+            await axios.get(`http://localhost:3000/products/${id}/`).then(response => {
+                this.product = response.data
+            })
         },
     }
 }

@@ -30,14 +30,14 @@ export  default {
 
   methods: {
     ...mapActions({
-      fetchProducts: "products/fetchProducts",
+      getProductDetails: "detail/getProductDetails",
       addProductToCart: "cart/addProductToCart"
     }),
   },
 
   created() {
     this.loading = true
-    this.fetchProducts()
+    this.getProductDetails()
         .then(() => this.loading = false)
   },
 
