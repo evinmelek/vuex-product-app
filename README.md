@@ -1,4 +1,5 @@
-# vuex-cinema-ticket-app
+# vuex-product-app
+This is a basic and small shopping app with vuex and vue-router.
 
 ## Project setup
 ```
